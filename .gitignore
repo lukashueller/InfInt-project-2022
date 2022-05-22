@@ -2,3 +2,5 @@ venv/
 build/gen/bakdata/corporate/v1/*_pb2.py
 .idea
 __pycache__/
+data/wikidata_dump.txt
+.vscode/

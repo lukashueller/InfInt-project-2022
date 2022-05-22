@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package bakdata.corporate.v1;
+
+message Wd_Company {
+  string id = 1;
+  string label = 2;
+  string description = 3;
+  string country = 6;
+  string website = 7;
+  string event_date = 4;
+  string event_type = 5;
+  Status status = 8;
+}
+
+enum Status {
+  STATUS_UNSPECIFIED = 0;
+  STATUS_INACTIVE = 1;
+  STATUS_ACTIVE = 2;
+}
