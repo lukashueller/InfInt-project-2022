@@ -30,12 +30,22 @@ class WdExtractor:
     def extract(self, line):
         corporate = Wd_Company()
 
-        print(line)
-        
+        print(type(line['aliases']))
+
         corporate.id = line["id"]
         corporate.label = line["label"]
+        corporate.description = line["description"]
+        # corporate.aliases = line["aliases"]
+
         corporate.country = line["country"]
         corporate.website = line["website"]
+
+        references = line["References"]
+        if references["ISIN"] is not None : corporate.isin = references["ISIN"]
+        if references["ISNI"] is not None : corporate.isni = references["ISNI"]
+        if references["EU Transparency Register ID"] is not None : corporate.euTransparancyRegisterID = references["EU Transparency Register ID"]
+        if references["German Lobbyregister ID"] is not None : corporate.germanLobbyregisterID = references["German Lobbyregister ID"]
+        if references["OpenCorporates ID"] is not None : corporate.openCorporatesID = references["OpenCorporates ID"]
 
         # print(corporate)
         
