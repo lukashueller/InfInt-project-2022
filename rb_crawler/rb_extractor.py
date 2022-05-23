@@ -4,7 +4,7 @@ from time import sleep
 import requests
 from parsel import Selector
 
-from build.gen.bakdata.corporate.v1.corporate_pb2 import Corporate, Status
+from build.gen.rb_announcement_pb2 import Corporate, Status
 from rb_producer import RbProducer
 
 log = logging.getLogger(__name__)

@@ -2,7 +2,7 @@ import logging
 import json
 from time import sleep
 
-from build.gen.bakdata.corporate.v1.wd_company_pb2 import Wd_Company, Datapoint, Exchange, Employee, Person
+from build.gen.wd_company_pb2 import Wd_Company, Datapoint, Exchange, Employee, Person
 from wd_producer import WdProducer
 
 log = logging.getLogger(__name__)
@@ -27,6 +27,8 @@ class WdExtractor:
 
             count += 1
             self.extract(json.loads(line))
+        
+        print(" --- END READ DUMP --- ")
 
     # This method extracts all necessary fields from each entry of 
     # the JSON file and converts them to the "corporate" schema.

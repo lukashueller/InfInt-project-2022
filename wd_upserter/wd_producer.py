@@ -5,8 +5,8 @@ from confluent_kafka.schema_registry import SchemaRegistryClient
 from confluent_kafka.schema_registry.protobuf import ProtobufSerializer
 from confluent_kafka.serialization import StringSerializer
 
-from build.gen.bakdata.corporate.v1 import wd_company_pb2
-from build.gen.bakdata.corporate.v1.wd_company_pb2 import Wd_Company
+from build.gen import wd_company_pb2
+from build.gen.wd_company_pb2 import Wd_Company
 from wd_upserter.constant import SCHEMA_REGISTRY_URL, BOOTSTRAP_SERVER, TOPIC
 
 log = logging.getLogger(__name__)
@@ -35,7 +35,6 @@ class WdProducer:
         self.producer.produce(
             topic=TOPIC, partition=-1, key=str(42), value=corporate, on_delivery=self.delivery_report
         )
-        print("DONE")
 
         # It is a naive approach to flush after each produce this can be optimised
         self.producer.poll()
