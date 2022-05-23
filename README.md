@@ -1,7 +1,9 @@
 # HPI information integration project SoSe 2022
 
-This repository provides a code base for the information integration course in the summer semester of 2022. Below you
-can find the documentation for setting up the project.
+**Team:** [Tim Kuffner]([url](https://github.com/1T1m)) & [Lukas Hüller]([url](https://github.com/lukashueller))  
+**Data Sources:** [Wikidata]([url](https://www.wikidata.org/wiki/Wikidata:Main_Page)) & [Registerbekanntmachungen]([url](https://www.handelsregisterbekanntmachungen.de/?aktion=suche))
+
+This repository will be used for the course Information Integration in the summer term 2022. It is based on the codebase of bakdata and will be further developed by the project group led by Tim Kuffner and Lukas Hüller. Below you will find the documentation to [set up]([url](https://github.com/lukashueller/InfInt-project-2022/edit/main/README.md#setup)) and [run]([url](https://github.com/lukashueller/InfInt-project-2022/edit/main/README.md#run)) the project.
 
 ## Prerequisites
 
@@ -76,13 +78,12 @@ to move the data from the `coporate-events` topic into the Elasticsearch.
 This project uses [Poetry](https://python-poetry.org/) as a build tool.
 To install all the dependencies, just run `poetry install`.
 
-This project uses Protobuf for serializing and deserializing objects. We provided a
-simple [protobuf schema](./proto/bakdata/corporate/v1/corporate.proto).
+This project uses Protobuf for serializing and deserializing objects. Just have a look at our [protobuf schemas](./proto).
 Furthermore, you need to generate the Python code for the model class from the proto file.
 To do so run the [`generate-proto.sh`](./generate-proto.sh) script.
-This script uses the [Protobuf compiler (protoc)](https://grpc.io/docs/protoc-installation/) to generate the model class
-under the `build/gen/bakdata/corporate/v1` folder
-with the name `corporate_pb2.py`.
+This script uses the [Protobuf compiler (protoc)](https://grpc.io/docs/protoc-installation/) to generate the model classes
+under the `build/gen/` folder
+with the names `rb_announcements_pb2.py` and `wd_companies_pb2.py`.
 
 ## Run
 
@@ -109,7 +110,8 @@ To start the connector, you need to push the JSON config file to Kafka. You can 
 use the [bash script provided](./connect/push-config.sh). It is possible to remove a connector by deleting it
 through Kowl's UI dashboard or calling the deletion API in the [bash script provided](./connect/delete-config.sh).
 
-### RB Crawler
+### RUN Producer
+#### Producer 1: RB Crawler
 
 You can start the crawler with the command below:
 
@@ -133,6 +135,14 @@ Options:
   -s, --state [bw|by|be|br|hb|hh|he|mv|ni|nw|rp|sl|sn|st|sh|th]
                                   The state ISO code
   --help                          Show this message and exit.
+```
+
+#### Producer 2: Wikidata-Dump Extractor
+First download the cleaned Wikidata dump provided by us and save it in the folder `[/data](url)` named `wikidata_dump.txt`.
+
+You can now start the extraction with the command below:
+```shell
+poetry run python wd_upserter/main.py
 ```
 
 ## Query data
