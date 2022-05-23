@@ -29,20 +29,13 @@ class WdProducer:
 
         self.producer = SerializingProducer(producer_conf)
 
+    # Produce to Kafka
     def produce(self, corporate: Wd_Company):
-        print("PRODUCING")
+        print("PRODUCING" + "  " +  corporate.label)
         self.producer.produce(
             topic=TOPIC, partition=-1, key=str(42), value=corporate, on_delivery=self.delivery_report
         )
         print("DONE")
-
-        # It is a naive approach to flush after each produce this can be optimised
-        self.producer.poll()
-
-    def produce_to_topic(self, corporate: Wd_Company):
-        self.producer.produce(
-            topic=TOPIC, partition=-1, key=str(corporate.id), value=corporate, on_delivery=self.delivery_report
-        )
 
         # It is a naive approach to flush after each produce this can be optimised
         self.producer.poll()

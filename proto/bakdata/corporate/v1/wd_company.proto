@@ -6,15 +6,44 @@ message Wd_Company {
   string id = 1;
   string label = 2;
   string description = 3;
+  repeated string aliases = 4;
+  string inception = 5;
   string country = 6;
   string website = 7;
-  string event_date = 4;
-  string event_type = 5;
-  Status status = 8;
+
+  repeated Employee ceos = 8;
+  repeated Employee founders = 9;
+  repeated Employee chairpersons = 10;
+
+  repeated Exchange stockExchanges = 11;
+  repeated Datapoint employeeNumber = 12;
+  
+  string isin = 13;
+  string isni = 14;
+  string euTransparancyRegisterID = 15;
+  string germanLobbyregisterID = 16;
+  string openCorporatesID = 17;
+
 }
 
-enum Status {
-  STATUS_UNSPECIFIED = 0;
-  STATUS_INACTIVE = 1;
-  STATUS_ACTIVE = 2;
+message Datapoint {
+    string number = 1;
+    string date = 2;
+}
+
+message Employee {
+    Person person = 1;
+    string time_from = 2;
+    string time_to = 3;
+}
+
+message Person {
+    string name = 1;
+}
+
+message Exchange {
+    string name = 1;
+    string symbol = 2;
+    string time_from = 3;
+    string time_to = 4;
 }
