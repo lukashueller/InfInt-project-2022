@@ -2,7 +2,7 @@ import logging
 import json
 from time import sleep
 
-from build.gen.wd_company_pb2 import Wd_Company, Datapoint, Exchange, Employee, Person
+from build.gen.wd_company_pb2 import Wd_Company, Datapoint, Exchange, Employee
 from wd_producer import WdProducer
 
 log = logging.getLogger(__name__)
@@ -49,10 +49,7 @@ class WdExtractor:
             ceos = line["CEOs"]
             for ceo in ceos :
                 myEmployee = Employee()
-                if ceo["id"] is not None : 
-                    myPerson = Person()
-                    myPerson.name =  ceo["id"]
-                    # myEmployee.person = myPerson
+                if ceo["id"] is not None : myEmployee.person_id = ceo["id"]
                 if ceo["from"] is not None : myEmployee.time_from =  ceo["from"]
                 if ceo["to"] is not None : myEmployee.time_to =  ceo["to"]
                 corporate.ceos.append(myEmployee)
@@ -61,10 +58,7 @@ class WdExtractor:
             founders = line["Founders"]
             for founder in founders :
                 myEmployee = Employee()
-                if founder["id"] is not None : 
-                    myPerson = Person()
-                    myPerson.name =  founder["id"]
-                    # myEmployee.person = myPerson
+                if founder["id"] is not None : myEmployee.person_id = founder["id"]
                 if founder["from"] is not None : myEmployee.time_from =  founder["from"]
                 if founder["to"] is not None : myEmployee.time_to =  founder["to"]
                 corporate.founders.append(myEmployee)
@@ -73,10 +67,7 @@ class WdExtractor:
             chairpersons = line["Chairpersons"]
             for chairperson in chairpersons :
                 myEmployee = Employee()
-                if chairperson["id"] is not None : 
-                    myPerson = Person()
-                    myPerson.name =  chairperson["id"]
-                    # myEmployee.person = myPerson
+                if chairperson["id"] is not None : myEmployee.person_id = chairperson["id"]
                 if chairperson["from"] is not None : myEmployee.time_from =  chairperson["from"]
                 if chairperson["to"] is not None : myEmployee.time_to =  chairperson["to"]
                 corporate.chairpersons.append(myEmployee)

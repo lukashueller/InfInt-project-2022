@@ -33,7 +33,7 @@ class WdProducer:
     def produce(self, corporate: Wd_Company):
         print("PRODUCING" + "  " +  corporate.label)
         self.producer.produce(
-            topic=TOPIC, partition=-1, key=str(42), value=corporate, on_delivery=self.delivery_report
+            topic=TOPIC, partition=-1, key=corporate.id, value=corporate, on_delivery=self.delivery_report
         )
 
         # It is a naive approach to flush after each produce this can be optimised

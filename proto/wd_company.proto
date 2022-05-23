@@ -32,13 +32,9 @@ message Datapoint {
 }
 
 message Employee {
-    Person person = 1;
+    string person_id = 1;
     string time_from = 2;
     string time_to = 3;
-}
-
-message Person {
-    string name = 1;
 }
 
 message Exchange {
