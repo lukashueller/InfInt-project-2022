@@ -5,7 +5,7 @@ from confluent_kafka.schema_registry import SchemaRegistryClient
 from confluent_kafka.schema_registry.protobuf import ProtobufSerializer
 from confluent_kafka.serialization import StringSerializer
 
-from build.gen import corporate_pb2
+from build.gen import rb_announcement_pb2
 from build.gen.rb_announcement_pb2 import Corporate
 from rb_crawler.constant import SCHEMA_REGISTRY_URL, BOOTSTRAP_SERVER, TOPIC
 
@@ -18,7 +18,7 @@ class RbProducer:
         schema_registry_client = SchemaRegistryClient(schema_registry_conf)
 
         protobuf_serializer = ProtobufSerializer(
-            corporate_pb2.Corporate, schema_registry_client, {"use.deprecated.format": True}
+            rb_announcement_pb2.Corporate, schema_registry_client, {"use.deprecated.format": True}
         )
 
         producer_conf = {
