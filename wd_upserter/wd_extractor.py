@@ -23,7 +23,7 @@ class WdExtractor:
 
         count = 0
         for line in Lines:
-            if count == 5 : break # JUST FOR DEBUGGING (Interrupt after 5 companies)
+            # if count == 5 : break # JUST FOR DEBUGGING (Interrupt after 5 companies)
 
             count += 1
             self.extract(json.loads(line))
@@ -37,13 +37,13 @@ class WdExtractor:
 
         #print(line) # JUST FOR DEBUGGING
 
-        corporate.id = line["id"]                       #1
-        corporate.label = line["label"]                 #2
-        corporate.description = line["description"]     #3
-        corporate.aliases.extend(line["aliases"])       #4
-        corporate.inception = line["inception"]         #5
-        corporate.country = line["country"]             #6
-        corporate.website = line["website"]             #7
+        if line["id"] is not None : corporate.id = line["id"]                               #1
+        if line["label"] is not None : corporate.label = line["label"]                      #2
+        if line["description"] is not None : corporate.description = line["description"]    #3
+        if line["aliases"] is not None : corporate.aliases.extend(line["aliases"])          #4
+        if line["inception"] is not None : corporate.inception = line["inception"]          #5
+        if line["country"] is not None : corporate.country = line["country"]                #6
+        if line["website"] is not None : corporate.website = line["website"]                #7
 
         if len(line["CEOs"]) > 0 :                      #8
             ceos = line["CEOs"]
