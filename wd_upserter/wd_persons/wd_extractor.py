@@ -25,7 +25,7 @@ class WdExtractor:
             #if count == 100 : break # JUST FOR DEBUGGING (Interrupt after 5 persons)
 
             count += 1
-            self.extract(json.loads(line))
+            self.extract(json.loads(line[:-2])) # The wikidata dump is one large JSON file, so every line ends with a ",". The [:-2] removes this last comma.
         
         print(" --- END READ DUMP --- ")
 
