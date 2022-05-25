@@ -2,5 +2,5 @@ venv/
 build/gen/*_pb2.py
 .idea
 __pycache__/
-data/wikidata_dump.txt
+data/wd*
 .vscode/
