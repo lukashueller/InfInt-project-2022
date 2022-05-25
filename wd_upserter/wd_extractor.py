@@ -17,7 +17,7 @@ class WdExtractor:
     def read_dump(self):
         print(" --- START READ DUMP --- ")
 
-        wikidata_dump = open('data/wikidata_dump.txt', 'r')
+        wikidata_dump = open('data/wd_companies_dump.txt', 'r')
         Lines = wikidata_dump.readlines()
         wikidata_dump.close()
 

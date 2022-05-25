@@ -27,7 +27,7 @@ and `land_abk`. For instance, we chose the state Rheinland-Pfalz `rp` with an an
 new entry of the company BioNTech.
 
 ```shell
-export STATE="rp" 
+export STATE="rp"
 export RB_ID="56267"
 curl -X GET  "https://www.handelsregisterbekanntmachungen.de/skripte/hrb.php?rb_id=$RB_ID&land_abk=$STATE"
 ```
@@ -91,7 +91,7 @@ with the names `rb_announcements_pb2.py` and `wd_companies_pb2.py`.
 Use `docker-compose up -d` to start all the services: [Zookeeper](https://zookeeper.apache.org/)
 , [Kafka](https://kafka.apache.org/), [Schema
 Registry](https://docs.confluent.io/platform/current/schema-registry/index.html)
-, [Kafka REST Proxy]((https://github.com/confluentinc/kafka-rest)), [Kowl](https://github.com/redpanda-data/kowl),
+, [Kafka REST Proxy](<(https://github.com/confluentinc/kafka-rest)>), [Kowl](https://github.com/redpanda-data/kowl),
 [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.html),
 and [Elasticsearch](https://www.elastic.co/elasticsearch/). Depending on your system, it takes a couple of minutes
 before the services are up and running. You can use a tool
@@ -110,6 +110,7 @@ use the [bash script provided](./connect/push-config.sh). It is possible to remo
 through Kowl's UI dashboard or calling the deletion API in the [bash script provided](./connect/delete-config.sh).
 
 ### RUN Producer
+
 #### Producer 1: RB Crawler
 
 You can start the crawler with the command below:
@@ -137,9 +138,11 @@ Options:
 ```
 
 #### Producer 2: Wikidata-Dump Extractor
-First download the cleaned Wikidata dump provided by us and save it in a new folder `/data/` named `wikidata_dump.txt`.
+
+First download the cleaned Wikidata dump provided by us and save it in a new folder `/data/` named `wd_companies_dump.txt`.
 
 You can now start the extraction with the command below:
+
 ```shell
 poetry run python wd_upserter/main.py
 ```
@@ -176,7 +179,9 @@ curl -X GET "localhost:9200/_search?pretty" -H 'Content-Type: application/json' 
 ```
 
 ## Teardown
+
 You can stop and remove all the resources by running:
+
 ```shell
 docker-compose down
 ```
