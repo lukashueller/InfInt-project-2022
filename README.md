@@ -46,11 +46,11 @@ We will explain furthur how you can generate this class using the protobuf compi
 The compiler creates a `Corporate` class with the fields defined in the schema. The crawler fills the object fields with
 the
 extracted data from the website.
-It then serializes the `Corporate` object to bytes so that Kafka can read it and produces it to the `corporate-events`
+It then serializes the `Corporate` object to bytes so that Kafka can read it and produces it to the `rb-announcements`
 topic. After that, it increments the `rb_id` value and sends another GET request.
 This process continues until the end of the announcements is reached, and the crawler will stop automatically.
 
-### corporate-events topic
+### rb-announcements topic
 
 The `corporate-events` holds all the events (announcements) produced by the `rb_crawler`. Each message in a Kafka topic
 consist of a key and value.
@@ -70,7 +70,7 @@ Here we only use the Sink connector, which consumes data from a Kafka topic into
 Elasticsearch.
 
 We use the [Elasticsearch Sink Connector](https://docs.confluent.io/kafka-connect-elasticsearch/current/overview.html)
-to move the data from the `coporate-events` topic into the Elasticsearch.
+to move the data from the three topics into the Elasticsearch.
 
 ## Setup
 
@@ -82,7 +82,7 @@ Furthermore, you need to generate the Python code for the model class from the p
 To do so run the [`generate-proto.sh`](./generate-proto.sh) script.
 This script uses the [Protobuf compiler (protoc)](https://grpc.io/docs/protoc-installation/) to generate the model classes
 under the `build/gen/` folder
-with the names `rb_announcements_pb2.py` and `wd_companies_pb2.py`.
+with the names `rb_announcements_pb2.py`, `wd_companies_pb2.py` and `wd_persons_pb2.py`.
 
 ## Run
 
@@ -139,12 +139,13 @@ Options:
 
 #### Producer 2: Wikidata-Dump Extractor
 
-First download the cleaned Wikidata dump provided by us and save it in a new folder `/data/` named `wd_companies_dump.txt`.
+First download the cleaned Wikidata dumps (Companies and Persons) provided by us and save it in a new folder `/data/` named `wd_companies_dump.txt` and `wd_persons_dump.txt`.
 
-You can now start the extraction with the command below:
+You can start the extractions with the command below:
 
 ```shell
 poetry run python wd_upserter/wd_companies/main.py
+poetry run python wd_upserter/wd_persons/main.py
 ```
 
 ## Query data
