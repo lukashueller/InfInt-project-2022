@@ -62,6 +62,22 @@ the key will look like this: `rp_56267`.
 The value of the message contains more information like `event_name`, `event_date`, and more. Therefore, the value type
 is complex and needs a schema definition.
 
+### WD "Upserter"
+
+As Wikidata provides a [download](https://dumps.wikimedia.org/wikidatawiki/entities/) of a complete, up-to-date database image in the form of a JSON, the Wikidata page does not need to be crawled.
+
+However, since the dump is very large (~70Gb zip file, >500Gb unzipped), a preparation step must be performed on systems that do not have enough disk space to completely unzip the file. 
+
+#### Partially unzip the file
+The following command outputs the unzipped to stdout, from where we can filter the individual lines for the ID for a human. (Every person is an instance of human, so there will always be a "Q5" somewhere in the line)  
+`lbunzip2 -c latest-all.json.bz2 | grep '"id":"Q5"' > humans.txt`
+Similarly, the extraction of the companies:
+`lbunzip2 -c latest-all.json.bz2 | grep '"id":"Q4830453"' | less -S`
+
+The extracted files are ~1.4Gb for the companies and ~80Gb for the humans.
+
+With these files the WD "upserter" can then be used. It reads the files and processes them similar to the rb-crawler, but without the crawling part. There are also Protobuf objects created, which are sent to Kafka.
+
 ### Kafka Connect
 
 [Kafka Connect](https://docs.confluent.io/platform/current/connect/index.html) is a tool to move large data sets into
