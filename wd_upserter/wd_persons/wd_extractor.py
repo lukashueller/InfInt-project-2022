@@ -1,7 +1,7 @@
 import logging
 import json
 
-from build.gen.wd_company_pb2 import Wd_Company, Datapoint, Exchange, Employee
+from build.gen.wd_person_pb2 import Wd_Person
 from wd_producer import WdProducer
 
 log = logging.getLogger(__name__)
@@ -11,18 +11,18 @@ class WdExtractor:
         self.producer = WdProducer()
 
     # Opens the file and reads all entries line by line. 
-    # Then iterates over the array of all companies and 
-    # extracts all properties for one persons from this entry.
+    # Then iterates over the array of all persons and 
+    # extracts all properties for one person from this entry.
     def read_dump(self):
         print(" --- START READ DUMP --- ")
 
-        wikidata_dump = open('data/wd_companies_dump.txt', 'r')
+        wikidata_dump = open('data/wd_persons_dump.txt', 'r')
         Lines = wikidata_dump.readlines()
         wikidata_dump.close()
 
         count = 0
         for line in Lines:
-            # if count == 5 : break # JUST FOR DEBUGGING (Interrupt after 5 companies)
+            #if count == 100 : break # JUST FOR DEBUGGING (Interrupt after 5 persons)
 
             count += 1
             self.extract(json.loads(line))
@@ -30,13 +30,22 @@ class WdExtractor:
         print(" --- END READ DUMP --- ")
 
     # This method extracts all necessary fields from each entry of 
-    # the JSON file and converts them to the "corporate" schema.
+    # the JSON file and converts them to the "wd-persons" schema.
     def extract(self, line):
-        corporate = Wd_Company()
+        if "Q5" not in line["instanceof"] : 
+            print("NOT A HUMAN")
+            return 
+
+        person = Wd_Person()
 
         #print(line) # JUST FOR DEBUGGING
 
-        if line["id"] is not None : corporate.id = line["id"]                               #1
+        if line["id"] is not None : person.id = line["id"]                          #1
+        if line["name"] is not None : person.name = line["name"]                    #2
+        if line["birthdate"] is not None : person.date_birth = line["birthdate"]    #3
+        if line["deathdate"] is not None : person.date_death = line["deathdate"]    #4
+
+        """ if line["id"] is not None : corporate.id = line["id"]                               #1
         if line["label"] is not None : corporate.label = line["label"]                      #2
         if line["description"] is not None : corporate.description = line["description"]    #3
         if line["aliases"] is not None : corporate.aliases.extend(line["aliases"])          #4
@@ -98,5 +107,5 @@ class WdExtractor:
             corporate.germanLobbyregisterID = references["German Lobbyregister ID"]
         if references["OpenCorporates ID"] is not None :                                    #17
             corporate.openCorporatesID = references["OpenCorporates ID"]        
-        
-        self.producer.produce(corporate=corporate) # push corporate to kafka
+         """
+        self.producer.produce(person=person) # push corporate to kafka

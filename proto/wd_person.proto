@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package bakdata.corporate.v1;
+
+message Wd_Person {
+  string id = 1;
+  string name = 2;
+  string date_birth = 3;
+  string date_death = 4;
+}

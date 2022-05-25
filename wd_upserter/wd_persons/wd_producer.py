@@ -5,9 +5,9 @@ from confluent_kafka.schema_registry import SchemaRegistryClient
 from confluent_kafka.schema_registry.protobuf import ProtobufSerializer
 from confluent_kafka.serialization import StringSerializer
 
-from build.gen import wd_company_pb2
-from build.gen.wd_company_pb2 import Wd_Company
-from wd_upserter.wd_companies.constant import SCHEMA_REGISTRY_URL, BOOTSTRAP_SERVER, TOPIC
+from build.gen import wd_person_pb2
+from build.gen.wd_person_pb2 import Wd_Person
+from wd_upserter.wd_persons.constant import SCHEMA_REGISTRY_URL, BOOTSTRAP_SERVER, TOPIC
 
 log = logging.getLogger(__name__)
 
@@ -18,7 +18,7 @@ class WdProducer:
         schema_registry_client = SchemaRegistryClient(schema_registry_conf)
 
         protobuf_serializer = ProtobufSerializer(
-            wd_company_pb2.Wd_Company, schema_registry_client, {"use.deprecated.format": True}
+            wd_person_pb2.Wd_Person, schema_registry_client, {"use.deprecated.format": True}
         )
 
         producer_conf = {
@@ -30,11 +30,11 @@ class WdProducer:
         self.producer = SerializingProducer(producer_conf)
 
     # Produce to Kafka
-    def produce(self, corporate: Wd_Company):
-        print("PRODUCING" + "  " +  corporate.label)
+    def produce(self, person: Wd_Person):
+        print("PRODUCING" + "  " +  person.name)
         self.producer.produce(
-            topic=TOPIC, partition=-1, key=corporate.id, value=corporate, on_delivery=self.delivery_report
-        )
+            topic=TOPIC, partition=-1, key=person.id, value=person, on_delivery=self.delivery_report
+        ) 
 
         # It is a naive approach to flush after each produce this can be optimised
         self.producer.poll()
