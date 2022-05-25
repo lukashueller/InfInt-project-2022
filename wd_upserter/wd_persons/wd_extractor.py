@@ -32,17 +32,24 @@ class WdExtractor:
     # This method extracts all necessary fields from each entry of 
     # the JSON file and converts them to the "wd-persons" schema.
     def extract(self, line):
-        if "Q5" not in line["instanceof"] : 
+        person_instanceof = list(map(lambda x: x.get("mainsnak", {}).get("datavalue", {}).get("value", {}).get("id", None) ,line["claims"].get("P31", [])))
+        
+        if "Q5" not in person_instanceof : 
             print("NOT A HUMAN")
             return 
+
+        person_id = line["id"]
+        person_name = line["labels"].get("de", {}).get("value", None)
+        person_birthdate = line["claims"].get("P569", [{}])[0].get("mainsnak",{}).get("datavalue",{}).get("value",{}).get("time", None)
+        person_deathdate = line["claims"].get("P570", [{}])[0].get("mainsnak",{}).get("datavalue",{}).get("value",{}).get("time", None)
 
         person = Wd_Person()
 
         #print(line) # JUST FOR DEBUGGING
 
-        if line["id"] is not None : person.id = line["id"]                          #1
-        if line["name"] is not None : person.name = line["name"]                    #2
-        if line["birthdate"] is not None : person.date_birth = line["birthdate"]    #3
-        if line["deathdate"] is not None : person.date_death = line["deathdate"]    #4
+        if person_id is not None : person.id = person_id                          #1
+        if person_name is not None : person.name = person_name                    #2
+        if person_birthdate is not None : person.date_birth = person_birthdate    #3
+        if person_deathdate is not None : person.date_death = person_deathdate    #4
 
         self.producer.produce(person=person) # push corporate to kafka
