@@ -101,7 +101,7 @@ to check the status of the services.
 ### Kafka Connect
 
 After all the services are up and running, you need to configure Kafka Connect to use the Elasticsearch sink connector.
-The config file is a JSON formatted file. We provided a [basic configuration file](./connect/elastic-sink.json).
+The config file is a JSON formatted file. There is a seperated config file for each connector in the folder [/connect]([url](https://github.com/lukashueller/InfInt-project-2022/tree/main/connect)).
 You can find more information about the configuration properties on
 the [official documentation page](https://docs.confluent.io/kafka-connect-elasticsearch/current/overview.html).
 
