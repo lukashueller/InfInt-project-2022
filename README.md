@@ -144,7 +144,7 @@ First download the cleaned Wikidata dump provided by us and save it in a new fol
 You can now start the extraction with the command below:
 
 ```shell
-poetry run python wd_upserter/main.py
+poetry run python wd_upserter/wd_companies/main.py
 ```
 
 ## Query data
