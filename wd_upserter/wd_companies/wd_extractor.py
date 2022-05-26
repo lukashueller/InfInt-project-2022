@@ -1,7 +1,7 @@
 import logging
 import json
 
-import dictionaries.py as wd_dicts
+from dictionaries import exchangedict, countrydict
 
 from build.gen.wd_company_pb2 import Wd_Company, Datapoint, Exchange, Employee
 from wd_producer import WdProducer
@@ -47,7 +47,7 @@ class WdExtractor:
         company_country_id = line["claims"].get("P17", [{}])[0].get("mainsnak", {}).get("datavalue", {}).get("value",
                                                                                                                 {}).get(
             "id", None)
-        company_country = wd_dicts.countrydict.get(company_country_id, "https://www.wikidata.org/wiki/"+company_country_id) if company_country_id != None else None
+        company_country = countrydict.get(company_country_id, "https://www.wikidata.org/wiki/"+company_country_id) if company_country_id != None else None
         company_website = line["claims"].get("P856", [{}])[0].get("mainsnak", {}).get("datavalue", {}).get("value",None)
 
         company_ceos = list(
@@ -80,7 +80,7 @@ class WdExtractor:
         company_stockexchange = list(
             map(lambda x:
                 {
-                    "exchange": wd_dicts.exchangedict.get(x.get("mainsnak", {}).get("datavalue", {}).get("value", {}).get("id", ""), "https://www.wikidata.org/wiki/" + x.get("mainsnak", {}).get("datavalue", {}).get("value", {}).get("id", "")),
+                    "exchange": exchangedict.get(x.get("mainsnak", {}).get("datavalue", {}).get("value", {}).get("id", ""), "https://www.wikidata.org/wiki/" + x.get("mainsnak", {}).get("datavalue", {}).get("value", {}).get("id", "")),
                     "ticker": x.get("qualifiers",{}).get("P249",[{}])[0].get("datavalue", {}).get("value", None),
                     "from": x.get("qualifiers",{}).get("P580",[{}])[0].get("datavalue",{}).get("value",{}).get("time",None),
                     "to": x.get("qualifiers",{}).get("P582",[{}])[0].get("datavalue",{}).get("value",{}).get("time",None)
