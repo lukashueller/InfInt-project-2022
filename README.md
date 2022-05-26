@@ -72,7 +72,7 @@ However, since the dump is very large (~70Gb zip file, >500Gb unzipped), a prepa
 The following command outputs the unzipped to stdout, from where we can filter the individual lines for the ID for a human. (Every person is an instance of human, so there will always be a "Q5" somewhere in the line)  
 `lbunzip2 -c latest-all.json.bz2 | grep '"id":"Q5"' > humans.txt`
 Similarly, the extraction of the companies:
-`lbunzip2 -c latest-all.json.bz2 | grep '"id":"Q4830453"' | less -S`
+`lbunzip2 -c latest-all.json.bz2 | grep '"id":"Q4830453"' > companys.txt`
 
 The extracted files are ~1.4Gb for the companies and ~80Gb for the humans.
 
