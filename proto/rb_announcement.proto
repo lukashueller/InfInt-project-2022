@@ -10,7 +10,9 @@ message Corporate {
   string event_date = 5;
   string event_type = 6;
   Status status = 7;
-  string information = 8;
+  string company_name = 8;
+  string company_address = 9;
+  string information = 10;
 }
 
 enum Status {

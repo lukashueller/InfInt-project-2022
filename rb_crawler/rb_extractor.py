@@ -1,4 +1,5 @@
 import logging
+import re
 from time import sleep
 
 import requests
@@ -33,6 +34,10 @@ class RbExtractor:
                 corporate.event_date = selector.xpath("/html/body/font/table/tr[4]/td/text()").get()
                 corporate.id = f"{self.state}_{self.rb_id}"
                 raw_text: str = selector.xpath("/html/body/font/table/tr[6]/td/text()").get()
+                result = re.search(r"^([\s\S]*?)\(([\s\S]*?)\)\s*\.", raw_text)
+                corporate.company_name = result.group(1)
+                corporate.company_address = result.group(2)
+                
                 self.handle_events(corporate, event_type, raw_text)
                 self.rb_id = self.rb_id + 1
                 log.debug(corporate)
