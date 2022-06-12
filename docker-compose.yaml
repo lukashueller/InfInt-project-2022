@@ -5,7 +5,7 @@ services:
     image: "mongo"
     container_name: "mongo-db"
     environment:
-      - MONGO_INITDB_DATABASE=rb_announcements # database name you want to make
+      - MONGO_INITDB_DATABASE=infIntDatabase # database name you want to make
       - MONGO_INITDB_ROOT_USERNAME=admin # set your container root usernam
       - MONGO_INITDB_ROOT_PASSWORD=HY9p1hJ4KT423Wu6pbxQ1LNwQ7KWBGH # set your container root password
     volumes:
@@ -147,6 +147,7 @@ services:
       - -c
       - |
         echo "Installing Connector"
+        confluent-hub install mongodb/kafka-connect-mongodb:1.7.0 --no-prompt
         confluent-hub install confluentinc/kafka-connect-elasticsearch:11.1.10 --no-prompt
         confluent-hub install confluentinc/kafka-connect-protobuf-converter:7.1.0 --no-prompt
         #
