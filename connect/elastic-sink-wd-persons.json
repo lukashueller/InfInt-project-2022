@@ -1,5 +1,5 @@
 {
-  "name": "elasticsearch-sink-wd-companies",
+  "name": "elasticsearch-sink-wd-persons",
   "config": {
     "connector.class": "io.confluent.connect.elasticsearch.ElasticsearchSinkConnector",
     "topics": "wd-persons",
