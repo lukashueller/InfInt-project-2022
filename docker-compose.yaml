@@ -139,8 +139,8 @@ services:
     volumes:
       - ./connect/elastic-sink-rb-announcements.json:/connect/elastic-sink-rb-announcements.json
       - ./connect/elastic-sink-wd-companies.json:/connect/elastic-sink-wd-companies.json
-      - ./connect/elastic-sink-wd-peoples.json:/connect/elastic-sink-wd-peoples.json
-      - ./connect/mongo-sink-wd-peoples.json:/connect/mongo-sink-wd-peoples.json
+      - ./connect/elastic-sink-wd-persons.json:/connect/elastic-sink-wd-persons.json
+      - ./connect/mongo-sink-wd-persons.json:/connect/mongo-sink-wd-persons.json
 
     command:
       - bash
