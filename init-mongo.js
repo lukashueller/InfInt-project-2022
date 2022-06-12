@@ -6,7 +6,7 @@ db.createUser(
             [
                 {
                     role: "readWrite",
-                    db: "rb_announcements"
+                    db: "infIntDatabase"
                 }
             ]
     }

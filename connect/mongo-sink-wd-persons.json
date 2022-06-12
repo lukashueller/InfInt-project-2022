@@ -1,11 +1,12 @@
 {
   "name": "mongo-sink-wd-persons",
   "config": {
-    "connector.class": "com.mongodb.kafka.connect.MongoSinkConnector",
-    "connection.uri": "mongodb://mongo1:27017/?replicaSet=rs0",
-    "database": "infIntDatabase",
+    "change.data.capture.handler": "com.mongodb.kafka.connect.sink.cdc.mongodb.ChangeStreamHandler",
     "collection": "wd-persons",
-    "topics": "wd-persons",
-    "change.data.capture.handler": "com.mongodb.kafka.connect.sink.cdc.mongodb.ChangeStreamHandler"
+    "connection.uri": "mongodb://db_user:db_user@mongo-db:27017/infIntDatabase",
+    "connector.class": "com.mongodb.kafka.connect.MongoSinkConnector",
+    "database": "infIntDatabase",
+    "name": "mongo-sink-wd-persons",
+    "topics": "wd-persons"
   }
 }
