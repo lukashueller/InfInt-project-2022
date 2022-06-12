@@ -4,3 +4,4 @@ build/gen/*_pb2.py
 __pycache__/
 data/wd*
 .vscode/
+mongo-volume
