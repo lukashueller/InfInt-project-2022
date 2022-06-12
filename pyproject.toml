@@ -73,6 +73,7 @@ w3lib = "1.22.0"
 wsproto = "1.1.0"
 "zope.interface" = "5.4.0"
 click = "8.0.2"
+pymongo = "^4.1.1"
 
 [tool.poetry.dev-dependencies]
 black = {version = "^21.7b0", allow-prereleases = true, python = "^3.8" }
