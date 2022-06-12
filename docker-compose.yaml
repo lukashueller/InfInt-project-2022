@@ -2,8 +2,8 @@
 version: "3"
 services:
   mongo-db:
-    image: 'mongo'
-    container_name: 'mongo-db'
+    image: "mongo"
+    container_name: "mongo-db"
     environment:
       - MONGO_INITDB_DATABASE=rb_announcements # database name you want to make
       - MONGO_INITDB_ROOT_USERNAME=admin # set your container root usernam
@@ -12,7 +12,7 @@ services:
       - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
       - ./mongo-volume:/data/db
     ports:
-      - '27017-27019:27017-27019'
+      - "27017-27019:27017-27019"
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.0.1
@@ -140,6 +140,8 @@ services:
       - ./connect/elastic-sink-rb-announcements.json:/connect/elastic-sink-rb-announcements.json
       - ./connect/elastic-sink-wd-companies.json:/connect/elastic-sink-wd-companies.json
       - ./connect/elastic-sink-wd-peoples.json:/connect/elastic-sink-wd-peoples.json
+      - ./connect/mongo-sink-wd-peoples.json:/connect/mongo-sink-wd-peoples.json
+
     command:
       - bash
       - -c

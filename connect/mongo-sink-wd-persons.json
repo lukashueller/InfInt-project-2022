@@ -1,0 +1,11 @@
+{
+  "name": "mongo-sink-wd-persons",
+  "config": {
+    "connector.class": "com.mongodb.kafka.connect.MongoSinkConnector",
+    "connection.uri": "mongodb://mongo1:27017/?replicaSet=rs0",
+    "database": "infIntDatabase",
+    "collection": "wd-persons",
+    "topics": "wd-persons",
+    "change.data.capture.handler": "com.mongodb.kafka.connect.sink.cdc.mongodb.ChangeStreamHandler"
+  }
+}
