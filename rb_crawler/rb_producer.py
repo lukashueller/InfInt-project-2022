@@ -1,7 +1,6 @@
 import json
 import logging
 
-from pymongo import MongoClient
 from google.protobuf.json_format import MessageToJson
 from confluent_kafka import SerializingProducer
 from confluent_kafka.schema_registry import SchemaRegistryClient
@@ -13,9 +12,6 @@ from build.gen.rb_announcement_pb2 import Corporate
 from rb_crawler.constant import SCHEMA_REGISTRY_URL, BOOTSTRAP_SERVER, TOPIC
 
 log = logging.getLogger(__name__)
-
-client = MongoClient('mongodb://db_user:db_user@localhost:27017/infIntDatabase')
-
 class RbProducer:
     def __init__(self):
         schema_registry_conf = {"url": SCHEMA_REGISTRY_URL}
@@ -34,9 +30,17 @@ class RbProducer:
         self.producer = SerializingProducer(producer_conf)
 
     def produce_to_topic(self, corporate: Corporate):
-        db = client["infIntDatabase"]
-        collection = db["rb_announcements"]
-        collection.insert_one(json.loads(MessageToJson(corporate)))
+        self.producer.produce(
+            topic=TOPIC, partition=-1, key=str(corporate.id), value=corporate, on_delivery=self.delivery_report
+        )
+
+        # It is a naive approach to flush after each produce this can be optimised
+        self.producer.poll()
+        
+        # db = client["infIntDatabase"]
+        # collection = db["rb_announcements"]
+        # collection.insert_one(json.loads(MessageToJson(corporate)))
+
 
     @staticmethod
     def delivery_report(err, msg):

@@ -1,6 +1,4 @@
 import logging
-from pymongo import MongoClient
-
 from confluent_kafka import SerializingProducer
 from confluent_kafka.schema_registry import SchemaRegistryClient
 from confluent_kafka.schema_registry.protobuf import ProtobufSerializer
@@ -12,7 +10,6 @@ from wd_upserter.wd_persons.constant import SCHEMA_REGISTRY_URL, BOOTSTRAP_SERVE
 
 log = logging.getLogger(__name__)
 
-client = MongoClient('mongodb://db_user:db_user@localhost:27017/infIntDatabase')
 class WdProducer:
 
     def __init__(self):
@@ -31,14 +28,20 @@ class WdProducer:
 
         self.producer = SerializingProducer(producer_conf)
 
-    # Produce to MongoDB
+    # Produce to Kafka
     def produce(self, person: Wd_Person):
-        db = client["infIntDatabase"]
-        collection = db["wd_persons"]
-
         if (person.name != ""):
-            collection.insert_one({"id" : person.id, "name" : person.name, "date_birth" : person.date_birth, "date_death" : person.date_death})
-            # print("PRODUCING" + "  " +  person.name)
+            print("PRODUCING" + "  " +  person.name)
+            self.producer.produce(
+                topic=TOPIC, partition=-1, key=person.id, value=person, on_delivery=self.delivery_report
+            )
+            self.producer.poll()
+        # db = client["infIntDatabase"]
+        # collection = db["wd_persons"]
+
+        # if (person.name != ""):
+        #     collection.insert_one({"id" : person.id, "name" : person.name, "date_birth" : person.date_birth, "date_death" : person.date_death})
+        #     # print("PRODUCING" + "  " +  person.name)
 
     @staticmethod
     def delivery_report(err, msg):

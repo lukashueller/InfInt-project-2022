@@ -1,7 +1,6 @@
 import json
 import logging
 
-from pymongo import MongoClient
 from google.protobuf.json_format import MessageToJson
 from confluent_kafka import SerializingProducer
 from confluent_kafka.schema_registry import SchemaRegistryClient
@@ -13,8 +12,6 @@ from build.gen.wd_company_pb2 import Wd_Company
 from wd_upserter.wd_companies.constant import SCHEMA_REGISTRY_URL, BOOTSTRAP_SERVER, TOPIC
 
 log = logging.getLogger(__name__)
-
-client = MongoClient('mongodb://db_user:db_user@localhost:27017/infIntDatabase')
 
 class WdProducer:
     def __init__(self):
@@ -35,9 +32,18 @@ class WdProducer:
 
     # Produce to MongoDB
     def produce(self, corporate: Wd_Company):
-        db = client["infIntDatabase"]
-        collection = db["wd_companies"]
-        collection.insert_one(json.loads(MessageToJson(corporate)))
+        print("PRODUCING" + "  " +  corporate.label)
+        self.producer.produce(
+            topic=TOPIC, partition=-1, key=corporate.id, value=corporate, on_delivery=self.delivery_report
+        )
+
+        # It is a naive approach to flush after each produce this can be optimised
+        self.producer.poll()
+
+
+        # db = client["infIntDatabase"]
+        # collection = db["wd_companies"]
+        # collection.insert_one(json.loads(MessageToJson(corporate)))
 
     @staticmethod
     def delivery_report(err, msg):
