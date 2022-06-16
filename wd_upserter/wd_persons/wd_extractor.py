@@ -22,7 +22,8 @@ class WdExtractor:
 
         count = 0
         for line in Lines:
-            #if count == 100 : break # JUST FOR DEBUGGING (Interrupt after 5 persons)
+            if count % 1000 == 0 : print(count)
+            # if count == 100 : break # JUST FOR DEBUGGING (Interrupt after 5 persons)
 
             count += 1
             self.extract(json.loads(line[:-2])) # The wikidata dump is one large JSON file, so every line ends with a ",". The [:-2] removes this last comma.
@@ -45,11 +46,9 @@ class WdExtractor:
 
         person = Wd_Person()
 
-        #print(line) # JUST FOR DEBUGGING
-
         if person_id is not None : person.id = person_id                          #1
         if person_name is not None : person.name = person_name                    #2
         if person_birthdate is not None : person.date_birth = person_birthdate    #3
         if person_deathdate is not None : person.date_death = person_deathdate    #4
 
-        self.producer.produce(person=person) # push corporate to kafka
+        self.producer.produce(person=person) # push corporate to mongodb

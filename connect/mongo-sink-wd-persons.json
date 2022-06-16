@@ -1,0 +1,12 @@
+{
+  "name": "mongo-sink-wd-persons",
+  "config": {
+    "change.data.capture.handler": "com.mongodb.kafka.connect.sink.cdc.mongodb.ChangeStreamHandler",
+    "collection": "wd-persons",
+    "connection.uri": "mongodb://db_user:db_user@mongo-db:27017/infIntDatabase",
+    "connector.class": "com.mongodb.kafka.connect.MongoSinkConnector",
+    "database": "infIntDatabase",
+    "name": "mongo-sink-wd-persons",
+    "topics": "wd-persons"
+  }
+}

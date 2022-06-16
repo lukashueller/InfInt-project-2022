@@ -24,6 +24,7 @@ class WdExtractor:
 
         count = 0
         for line in Lines:
+            if count % 1000 == 0 : print(count)
             # if count == 5 : break # JUST FOR DEBUGGING (Interrupt after 5 companies)
 
             count += 1
@@ -166,4 +167,4 @@ class WdExtractor:
         if company_GLRID is not None :corporate.germanLobbyregisterID = company_GLRID          #16
         if company_OCID is not None : corporate.openCorporatesID = company_OCID                #17
         
-        self.producer.produce(corporate=corporate) # push corporate to kafka
+        self.producer.produce(corporate=corporate) # push corporate to MongoDB
