@@ -1,18 +1,7 @@
 ---
 version: "3"
 services:
-  mongo-db:
-    image: "mongo"
-    container_name: "mongo-db"
-    environment:
-      - MONGO_INITDB_DATABASE=infIntDatabase # database name you want to make
-      - MONGO_INITDB_ROOT_USERNAME=admin # set your container root usernam
-      - MONGO_INITDB_ROOT_PASSWORD=HY9p1hJ4KT423Wu6pbxQ1LNwQ7KWBGH # set your container root password
-    volumes:
-      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
-      - ./mongo-volume:/data/db
-    ports:
-      - "27017-27019:27017-27019"
+
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.0.1
@@ -140,14 +129,12 @@ services:
       - ./connect/elastic-sink-rb-announcements.json:/connect/elastic-sink-rb-announcements.json
       - ./connect/elastic-sink-wd-companies.json:/connect/elastic-sink-wd-companies.json
       - ./connect/elastic-sink-wd-persons.json:/connect/elastic-sink-wd-persons.json
-      - ./connect/mongo-sink-wd-persons.json:/connect/mongo-sink-wd-persons.json
 
     command:
       - bash
       - -c
       - |
         echo "Installing Connector"
-        confluent-hub install mongodb/kafka-connect-mongodb:1.7.0 --no-prompt
         confluent-hub install confluentinc/kafka-connect-elasticsearch:11.1.10 --no-prompt
         confluent-hub install confluentinc/kafka-connect-protobuf-converter:7.1.0 --no-prompt
         #
@@ -157,12 +144,43 @@ services:
         sleep infinity
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.2
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.3.0
     container_name: elasticsearch
     hostname: elasticsearch
     environment:
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - xpack.security.enabled=false
+      - xpack.security.http.ssl.enabled=false
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
     ports:
       - "9200:9200"
       - "9300:9300"
+  kibana:
+    container_name: kb-container
+    image: docker.elastic.co/kibana/kibana:8.3.0
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_USERNAME=kibana_system
+      - ELASTICSEARCH_PASSWORD=fSd1kL=BaQ_wPXOY5a8d
+    depends_on:
+      - elasticsearch
+    ports:
+      - 5601:5601
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -s -I http://localhost:5601 | grep -q 'HTTP/1.1 302 Found'",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+
+
+volumes:
+  esdata:
+    driver: local
+  kibanadata:
+    driver: local
