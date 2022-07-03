@@ -5,3 +5,6 @@ __pycache__/
 data/wd*
 .vscode/
 mongo-volume
+
+elastic_dump/*
+!elastic_dump/.gitkeep
