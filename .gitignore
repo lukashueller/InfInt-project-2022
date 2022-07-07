@@ -5,8 +5,10 @@ __pycache__/
 .vscode/
 mongo-volume
 
-data/elastic_dumps/*.txt
-data/wd_dumps/*.txt
+data/1_wd_dumps/*.txt
+data/2_elastic_dumps/*.txt
+data/3_joined_data/*.txt
+!data/3_joined_data/joined_companies.txt
 
 elastic_dump/*
 !elastic_dump/.gitkeep
