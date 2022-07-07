@@ -2,7 +2,7 @@ import json
 
 class CompanyJoiner():
     wd_companies = open('data/2_elastic_dumps/wd-companies.txt', 'r')
-    rb_announcements = open('data/3_joined_data/enriched_wd_rb_dump_with_company_name.txt', 'r')
+    rb_announcements = open('data/3_joined_data/enriched_rb_dump_with_company_name.txt', 'r')
     joined_file = open('data/3_joined_data/joined_companies.txt', 'w')
 
     allCompanies = dict()
@@ -20,7 +20,7 @@ class CompanyJoiner():
         n_matches = 0
         for line in self.rb_announcements:
             #if count == 1000000 : break
-            #if count % 20000 == 0 : print(count)
+            if count % 100000 == 0 : print(count)
             
             line = json.loads(line[:-1])
             cn = line["_source"]["company_name"]
