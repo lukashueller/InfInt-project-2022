@@ -2,9 +2,11 @@ venv/
 build/gen/*_pb2.py
 .idea
 __pycache__/
-data/wd*
 .vscode/
 mongo-volume
+
+data/elastic_dumps/*.txt
+data/wd_dumps/*.txt
 
 elastic_dump/*
 !elastic_dump/.gitkeep
