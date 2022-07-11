@@ -29,6 +29,8 @@ class CompanyJoiner():
             if wd_company != "":
                 joinedCompany = line
 
+                joinedCompany["_source"]["rb_state_code"] = ("DE-" + joinedCompany["_id"][0:2].upper())
+
                 joinedCompany["_source"]["wd_id"] = wd_company["id"]
                 joinedCompany["_source"]["wd_description"] = wd_company["description"]
                 joinedCompany["_source"]["wd_aliases"] = wd_company["aliases"]
